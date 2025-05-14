@@ -14,7 +14,7 @@
 #include <string>
 #include <unordered_set>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Big Zeet"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -28,7 +28,40 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  * to also change the corresponding functions in `utils.h`.
  */
 std::set<std::string> get_applicants(std::string filename) {
-  // STUDENT TODO: Implement this function.
+  std::set<std::string> applicants;
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cerr << "Error: Could not open file " << filename << std::endl;
+    return applicants;
+  }
+
+  std::string name;
+  while (std::getline(file, name)) {
+    if (!name.empty()) {
+      applicants.insert(name);
+    }
+  }
+
+  file.close();
+  return applicants;
+}
+
+std::string get_initials(std::string name) {
+  std::string initials;
+  std::string::size_type pos = 0;
+
+  // Get the first character
+  if (!name.empty()) {
+    initials += name[0];
+    pos = name.find(' ');
+  }
+
+  // Get the second character
+  if (pos != std::string::npos && pos + 1 < name.length()) {
+    initials += name[pos + 1];
+  }
+
+  return initials;
 }
 
 /**
@@ -40,7 +73,14 @@ std::set<std::string> get_applicants(std::string filename) {
  * @return          A queue containing pointers to each matching name.
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
+  std::queue<const std::string*> matches;
+  std::string initials = get_initials(name);
+  for (const auto& student : students) {
+    if (get_initials(student) == initials) {
+      matches.push(&student);
+    }
+  }
+  return matches;
 }
 
 /**
@@ -54,7 +94,12 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  *                Will return "NO MATCHES FOUND." if `matches` is empty.
  */
 std::string get_match(std::queue<const std::string*>& matches) {
-  // STUDENT TODO: Implement this function.
+  std::string match = "NO MATCHES FOUND.";
+  if (!matches.empty()) {
+    match = *matches.front();
+    matches.pop();
+  }
+  return match;
 }
 
 /* #### Please don't remove this line! #### */
