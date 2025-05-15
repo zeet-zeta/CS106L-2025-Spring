@@ -3,6 +3,10 @@
  * Created by Fabio Ibanez with modifications by Jacob Roberts-Baca.
  */
 
+#include "class.h"
+
 void sandbox() {
-  // STUDENT TODO: Construct an instance of your class!
+    MyClass myObject;
+    myObject.setValue(42);
+    int value = myObject.getValue();
 }
